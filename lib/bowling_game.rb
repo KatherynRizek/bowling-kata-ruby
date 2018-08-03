@@ -6,27 +6,23 @@ class Game
 
     def roll(pins)
         @frame_scores[@current_roll] = pins
-        puts @frame_scores[@current_roll]
         @current_roll += 1
     end
 
     def score()
         score = 0
-        current_frame = 0
-        i = 0
-        until i >= 10 do 
-            if self.isStrike(current_frame)
-                score += 10 + @frame_scores[current_frame + 1] + @frame_scores[current_frame + 2]
-                current_frame += 1
-            elsif self.isSpare(current_frame)
-                score += 10 + @frame_scores[current_frame + 2]
-                current_frame += 2
+        frame_roll = 0
+        10.times do 
+            if self.isStrike(frame_roll)
+                score += 10 + @frame_scores[frame_roll + 1] + @frame_scores[frame_roll + 2]
+                frame_roll += 1
+            elsif self.isSpare(frame_roll)
+                score += 10 + @frame_scores[frame_roll + 2]
+                frame_roll += 2
             else
-                score += @frame_scores[current_frame] + @frame_scores[current_frame + 1]
-                #puts score
-                current_frame += 2
+                score += @frame_scores[frame_roll] + @frame_scores[frame_roll + 1]
+                frame_roll += 2
             end
-            i += 1
         end
         return score
     end
@@ -48,11 +44,8 @@ class Game
     end
 
     def multiRolls(numRolls)
-        i = 0
-        until i >= numRolls do
+        numRolls.times do
           self.roll(0)
-          i += 1
         end
     end
-
 end

@@ -11,10 +11,8 @@ class TestBowlingGame < Test::Unit::TestCase
 
   def test_roll_all_ones
     g = Game.new()
-    i = 0
-    until i >= 20 do
+    20.times do
       g.roll(1)
-      i += 1
     end
     assert_equal(20, g.score)
   end
@@ -77,10 +75,8 @@ class TestBowlingGame < Test::Unit::TestCase
 
   def test_all_strikes
     g = Game.new()
-    i = 0
-    until i >= 12
+    12.times do
       g.roll(10)
-      i += 1
     end
     assert_equal(300, g.score)
   end
