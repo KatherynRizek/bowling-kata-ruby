@@ -1,59 +1,53 @@
 class Game
     def initialize()
-        @score = 0
         @frame_scores = Array.new(21, 0)
         @current_roll = 0
-        @isSpare = false
     end
 
     def roll(pins)
         @frame_scores[@current_roll] = pins
+        puts @frame_scores[@current_roll]
         @current_roll += 1
-        if self.isStrike(@frame_scores[@current_roll-1], @frame_scores.length - 1)
-            @current_roll += 1
-        end
     end
-
 
     def score()
-        scoreSum = 0
+        score = 0
+        current_frame = 0
         i = 0
-        isNotFirstStrike = false
-        @frame_scores.each do |scoreNow|
-            scoreNow = scoreNow.to_i
-            if (i >= 2) && self.isSpare(@frame_scores[i-1].to_i, @frame_scores[i-2].to_i, i)
-                scoreNow = scoreNow * 2
-            elsif (i >= 4) && self.isStrike(@frame_scores[i-4].to_i, i)
-                scoreNow = @frame_scores[i-1].to_i  + @frame_scores[i-2].to_i
-                if isNotFirstStrike
-                    scoreNow += 10
-                end
-                isNotFirstStrike = true
+        until i >= 10 do 
+            if self.isStrike(current_frame)
+                score += 10 + @frame_scores[current_frame + 1] + @frame_scores[current_frame + 2]
+                current_frame += 1
+            elsif self.isSpare(current_frame)
+                score += 10 + @frame_scores[current_frame + 2]
+                current_frame += 2
+            else
+                score += @frame_scores[current_frame] + @frame_scores[current_frame + 1]
+                #puts score
+                current_frame += 2
             end
             i += 1
-            scoreSum += scoreNow
         end
-        return scoreSum
+        return score
     end
 
-    def isSpare(previous_score, two_previous_score, frameNum)
-        #spares can only be calculated on 3rd and beyond roll of frame
-        if (frameNum % 2 == 0) && (previous_score + two_previous_score == 10) && (previous_score != 0)
+    def isSpare(roll)
+        if (@frame_scores[roll] + @frame_scores[roll + 1]) == 10
             return true
         else
             return false
         end
     end
 
-    def isStrike(previous_score, frameNum)
-        if (frameNum % 2 == 0) && (previous_score == 10)
+    def isStrike(roll)
+        if @frame_scores[roll] == 10
             return true
         else
             return false
         end
     end
 
-    def manyRolls(numRolls)
+    def multiRolls(numRolls)
         i = 0
         until i >= numRolls do
           self.roll(0)

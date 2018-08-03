@@ -5,7 +5,7 @@ class TestBowlingGame < Test::Unit::TestCase
 
   def test_gutter_ball_game
     g = Game.new()
-    g.manyRolls(20)
+    g.multiRolls(20)
     assert_equal(0, g.score)
   end
 
@@ -24,7 +24,7 @@ class TestBowlingGame < Test::Unit::TestCase
     g.roll(7)
     g.roll(3) #adds up to spare
     g.roll(5)
-    g.manyRolls(17)
+    g.multiRolls(17)
     assert_equal(20, g.score)
   end
 
@@ -33,10 +33,12 @@ class TestBowlingGame < Test::Unit::TestCase
     g.roll(7)
     g.roll(3) #adds up to spare
     g.roll(8)
-    g.roll(2) #adds up to two spares
+    g.roll(1) 
+    g.roll(9)
+    g.roll(1)#adds up to two spares
     g.roll(3)
-    g.manyRolls(15)
-    assert_equal(34, g.score)
+    g.multiRolls(13)
+    assert_equal(43, g.score)
   end
 
   def test_one_strike_beginning
@@ -44,7 +46,7 @@ class TestBowlingGame < Test::Unit::TestCase
     g.roll(10)
     g.roll(1)
     g.roll(8)
-    g.manyRolls(16)
+    g.multiRolls(16)
     assert_equal(28, g.score)
   end
 
@@ -56,7 +58,7 @@ class TestBowlingGame < Test::Unit::TestCase
     g.roll(10)
     g.roll(2)
     g.roll(3)
-    g.manyRolls(12)
+    g.multiRolls(12)
     assert_equal(46, g.score())
   end
 
@@ -69,14 +71,18 @@ class TestBowlingGame < Test::Unit::TestCase
     g.roll(10)
     g.roll(2)
     g.roll(3)
-    g.manyRolls(12)
+    g.multiRolls(12)
     assert_equal(31, g.score())
   end
 
-  # def test_all_strikes
-  #   g = Game.new()
-  #   i = 2
-  #   until 
-
+  def test_all_strikes
+    g = Game.new()
+    i = 0
+    until i >= 12
+      g.roll(10)
+      i += 1
+    end
+    assert_equal(300, g.score)
+  end
 
 end
